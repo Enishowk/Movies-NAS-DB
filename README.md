@@ -4,6 +4,7 @@ A simple script to save the movie data from a NAS (with SMB) in a database.
 
 ## Requirement
 
+* Movie file names should follow this naming scheme: `title (year) quality.extension` eg. `Pulp Fiction (1994) 1080p.mkv`
 * Create a table like this : 
 ```sql
 CREATE TABLE IF NOT EXISTS `movies` (
