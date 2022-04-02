@@ -20,8 +20,6 @@ CREATE TABLE IF NOT EXISTS `movies` (
 ## Installation
 
 * Create a `.env` from the `.env.example`
-* `go mod tidy`
-* `go run build`
 
 ## Build
 
