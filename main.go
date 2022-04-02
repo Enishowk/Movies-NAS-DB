@@ -89,22 +89,19 @@ func getAllMovies(db *sql.DB) (map[string]string, error) {
 	for rows.Next() {
 		var movie Movie
 		if err := rows.Scan(&movie.id, &movie.title); err != nil {
-			return movies, nil
+			return nil, err
 		}
 		movies[movie.title] = movie.id
 	}
 	if err = rows.Err(); err != nil {
-		return movies, nil
+		return nil, err
 	}
 	return movies, nil
 }
 
 func getFilenameData(filename string) (title string, year string, quality string) {
 	fmtString := strings.FieldsFunc(filename, func(r rune) bool {
-		if r == '(' || r == ')' || r == '.' {
-			return true
-		}
-		return false
+		return r == '(' || r == ')' || r == '.'
 	})
 
 	title = strings.TrimSpace(fmtString[0])
