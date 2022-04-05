@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `movies` (
 ## Build
 
 * Default : `go build`
-* Linux : `GOOS=linux go build`
-* Windows : `GOOS=windows go build`
+* Linux : `GOOS=linux go build -ldflags '-X main.env_path=/YOUR_PATH/.env'
+* Windows : `GOOS=windows go build -ldflags '-X main.env_path=C:\YOUR_PATH\\.env'
 
 ## Usage
 

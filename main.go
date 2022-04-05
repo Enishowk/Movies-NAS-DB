@@ -13,8 +13,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var env_path = ".env"
+
 func init() {
-	err := godotenv.Load(".env")
+	err := godotenv.Load(env_path)
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
