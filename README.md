@@ -10,10 +10,11 @@ A simple script to save the movie data from a NAS (with SMB) in a database.
 CREATE TABLE IF NOT EXISTS `movies` (
   `id` varchar(36) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `year` year(4) DEFAULT NULL,
+  `year` year DEFAULT NULL,
   `quality` varchar(255) DEFAULT NULL,
-  `size` bigint(20) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
+  `size` bigint DEFAULT NULL,
+  `downloadedAt` datetime DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
 ```

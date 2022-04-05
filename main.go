@@ -23,6 +23,9 @@ func init() {
 func main() {
 	fmt.Println("start save...")
 	start := time.Now()
+	defer func() {
+		fmt.Println("finished in :", time.Since(start))
+	}()
 
 	s, err := ConnectSMB()
 	defer s.Logoff()
@@ -57,20 +60,17 @@ func main() {
 		title, year, quality := getFilenameData(file.Name())
 
 		if _, found := movies[title]; !found {
-			stmt, err := db.Prepare("INSERT INTO movies(id, title, year, quality, size, date) VALUES (?, ?, ?, ?, ?, ?)")
+			stmt, err := db.Prepare("INSERT INTO movies(id, title, year, quality, size, downloadedAt, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)")
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			_, err = stmt.Exec(uuid.New(), title, year, quality, file.Size(), file.ModTime().Format(time.RFC3339))
+			_, err = stmt.Exec(uuid.New(), title, year, quality, file.Size(), file.ModTime().Format(time.RFC3339), time.Now().Format(time.RFC3339))
 			if err != nil {
 				log.Fatal(err)
 			}
 		}
 	}
-
-	duration := time.Since(start)
-	fmt.Println("finished in :", duration)
 }
 
 type Movie struct {
@@ -87,7 +87,7 @@ func getAllMovies(db *sql.DB) (map[string]string, error) {
 
 	movies := make(map[string]string)
 	for rows.Next() {
-		var movie Movie
+		movie := Movie{}
 		if err := rows.Scan(&movie.id, &movie.title); err != nil {
 			return nil, err
 		}
@@ -99,7 +99,7 @@ func getAllMovies(db *sql.DB) (map[string]string, error) {
 	return movies, nil
 }
 
-func getFilenameData(filename string) (title string, year string, quality string) {
+func getFilenameData(filename string) (title, year, quality string) {
 	fmtString := strings.FieldsFunc(filename, func(r rune) bool {
 		return r == '(' || r == ')' || r == '.'
 	})
